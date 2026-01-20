@@ -3,6 +3,10 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 
+// ********************************************************************************************************** //
+// Editor tool made with ChatGPT for testing purposes and because is not the focus of the project
+// ********************************************************************************************************** //
+
 public class ScanOverlayTool : EditorWindow
 {
     [SerializeField] private Material overlayMaterial;

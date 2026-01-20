@@ -9,6 +9,7 @@ Shader "Custom/Scan/Beam"
 
     SubShader
     {
+        Tags { "Queue"="Transparent" "RenderType"="Transparent" }
         Blend One One
         ZWrite Off
         Cull Off
@@ -40,14 +41,13 @@ Shader "Custom/Scan/Beam"
                 v2f o;
                 o.pos = UnityObjectToClipPos(v.vertex);
 
-                // Y local del mesh (0 abajo, 1 arriba aprox)
                 o.height = saturate(v.vertex.y + 0.5);
+
                 return o;
             }
 
             half4 frag (v2f i) : SV_Target
             {
-                // Fade vertical (más fuerte arriba)
                 float fade = pow(i.height, _FadePower);
 
                 half3 col = _Color.rgb * (_Intensity * fade);

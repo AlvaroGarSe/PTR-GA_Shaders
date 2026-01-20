@@ -12,10 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba32b0ab326d8e949bb8f5046099247a, type: 3}
   m_Name: ScanWaveRendererFeature
   m_EditorClassIdentifier: Assembly-CSharp::ScanWaveRendererFeature
-  m_Active: 1
-  settings:
-    material: {fileID: 2100000, guid: f8d7b692b8152a74da90bcbd41c20de7, type: 2}
-    passEvent: 500
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0

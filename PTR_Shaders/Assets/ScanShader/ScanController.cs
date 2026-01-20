@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class ScanController : MonoBehaviour
 {
@@ -72,7 +71,6 @@ public class ScanController : MonoBehaviour
         // Update shader with global variables
         Shader.SetGlobalVector(ScanOriginID, scanOrigin);
         Shader.SetGlobalFloat(ScanDistanceID, scanDistance);
-        Shader.SetGlobalFloat(ScanEnabledID, 1f);
 
         // End Shader if reaches max distance
         if (scanDistance >= maxDistance)
@@ -94,10 +92,9 @@ public class ScanController : MonoBehaviour
             ScanItem s = scannables[i];
             if (s == null) continue;
 
-            Vector2 objPosXZ = new Vector2(s.transform.position.x, s.transform.position.z);
-            Vector2 originXZ = new Vector2(scanOrigin.x, scanOrigin.z);
-
-            float dist = Vector2.Distance(objPosXZ, originXZ);
+            float dx = s.transform.position.x - scanOrigin.x;
+            float dz = s.transform.position.z - scanOrigin.z;
+            float dist = Mathf.Sqrt(dx * dx + dz * dz);
 
             if (Mathf.Abs(dist - scanDistance) <= detectWidth)
             {

@@ -17,7 +17,6 @@ Shader "Custom/URP/ScanOverlay"
             Name "ScanOverlay"
             Tags { "LightMode"="UniversalForward" }
 
-            // Aditivo: suma brillo encima del material base
             Blend One One
             ZWrite Off
             ZTest LEqual
@@ -35,9 +34,9 @@ Shader "Custom/URP/ScanOverlay"
                 float _ScanSoftness;
             CBUFFER_END
 
-            // Globales (set desde C#)
-            float4 _GlobalScanOrigin;
-            float  _GlobalScanDistance;
+            // Global scan state set from C# (same for all overlay materials)
+            float4 _GlobalScanOrigin;    // World position (xyz)
+            float  _GlobalScanDistance;  // Current ring radius
             float  _GlobalScanEnabled;
 
             struct Attributes
@@ -51,11 +50,13 @@ Shader "Custom/URP/ScanOverlay"
                 float3 worldPos    : TEXCOORD0;
             };
 
+            // Returns a 0-1 mask for a ring centered at ringDistance with a given width/softness
             float RingMask(float distToOrigin, float ringDistance, float width, float softness)
             {
                 float x = abs(distToOrigin - ringDistance);
                 float w = max(width, 1e-5);
                 float s = max(softness, 1e-5);
+
                 float m = 1.0 - smoothstep(0.0, w, x);
                 m = pow(saturate(m), 1.0 / s);
                 return m;
@@ -72,9 +73,11 @@ Shader "Custom/URP/ScanOverlay"
 
             half4 frag (Varyings i) : SV_Target
             {
+                // When disabled, output black so additive blending has no effect
                 if (_GlobalScanEnabled < 0.5)
                     return half4(0,0,0,0);
 
+                // Distance on XZ plane (radar).
                 float dist = distance(i.worldPos.xz, _GlobalScanOrigin.xz);
                 float ring = RingMask(dist, _GlobalScanDistance, _ScanWidth, _ScanSoftness);
 
