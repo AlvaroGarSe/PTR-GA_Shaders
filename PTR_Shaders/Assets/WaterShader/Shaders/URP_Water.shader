@@ -207,7 +207,7 @@
                 float2 refrOffset = N.xz * (_RefractionStrength * refrMask);
                 float3 behindCol = SAMPLE_TEXTURE2D_X(_CameraOpaqueTexture, sampler_CameraOpaqueTexture, screenUV + refrOffset).rgb;
 
-                float3 baseWater = lerp(behindCol * waterCol.rgb, waterCol.rgb, 0.95);
+                float3 baseWater = lerp(behindCol * waterCol.rgb, waterCol.rgb, 0.25);
 
                 // Lighting simple
                 Light mainLight = GetMainLight();
